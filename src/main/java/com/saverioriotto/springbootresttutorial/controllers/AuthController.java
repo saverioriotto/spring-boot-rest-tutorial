@@ -13,6 +13,7 @@ import com.saverioriotto.springbootresttutorial.security.JwtUtils;
 import com.saverioriotto.springbootresttutorial.security.services.DettagliUtente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,6 +56,7 @@ public class AuthController{
     }
 
     @PostMapping("/registrazione")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Registrazione signUpRequest) {
 
         Optional<Utente> username = userRepo.cercaPerUsername(signUpRequest.getUsername());
@@ -78,24 +80,24 @@ public class AuthController{
         Set<Ruolo> roles = new HashSet<>();
         if (strRoles == null) {
             Ruolo userRole = roleRepository.cercaPerNome(RuoloEnum.UTENTE)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found.1"));
+                    .orElseThrow(() -> new RuntimeException("Error: Role "+RuoloEnum.UTENTE+" is not found"));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "ADMIN":
                         Ruolo adminRole = roleRepository.cercaPerNome(RuoloEnum.ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.2"));
+                                .orElseThrow(() -> new RuntimeException("Error: Role "+RuoloEnum.ADMIN+" is not found"));
                         roles.add(adminRole);
                         break;
                     case "MODERATORE":
                         Ruolo modRole = roleRepository.cercaPerNome(RuoloEnum.MODERATORE)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.3"));
+                                .orElseThrow(() -> new RuntimeException("Error: Role "+RuoloEnum.MODERATORE+" is not found"));
                         roles.add(modRole);
                         break;
                     default:
                         Ruolo userRole = roleRepository.cercaPerNome(RuoloEnum.UTENTE)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found.4"));
+                                .orElseThrow(() -> new RuntimeException("Error: Role "+RuoloEnum.UTENTE+" is not found"));
                         roles.add(userRole);
                 }
             });
