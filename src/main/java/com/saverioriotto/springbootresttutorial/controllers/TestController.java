@@ -10,24 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
-    @GetMapping("/all")
+    @GetMapping("/public")
     public String allAccess() {
-        return "Public Content.";
+        return "HELLO WORLD!";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/utente")
     @PreAuthorize("hasAuthority('UTENTE') or hasAuthority('MODERATORE') or hasAuthority('ADMIN')")
-    public String userAccess() {
-        return "User Content.";
-    }
+    public String userAccess() {return "HELLO WORLD! UTENTE";}
     @GetMapping("/mod")
     @PreAuthorize("hasAuthority('MODERATORE')")
     public String moderatorAccess() {
-        return "Moderator Board.";
+        return "HELLO WORLD! MODERATORE";
     }
     @GetMapping("/admin")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String adminAccess() {
-        return "Admin Board.";
+        return "HELLO WORLD! ADMIN";
     }
 }

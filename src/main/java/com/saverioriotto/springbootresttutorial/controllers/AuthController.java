@@ -63,14 +63,14 @@ public class AuthController{
         if (username.isPresent()) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Username già presente!"));
         }
 
         Optional<Utente> email = userRepo.cercaPerEmail(signUpRequest.getEmail());
         if (email.isPresent()) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error: Email già presente!"));
         }
         Utente user = new Utente(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
@@ -104,7 +104,7 @@ public class AuthController{
         }
         user.setRoles(roles);
         userRepo.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Utente registrato correttamente!"));
     }
 
 }
