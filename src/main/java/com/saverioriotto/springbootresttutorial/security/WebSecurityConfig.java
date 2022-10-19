@@ -23,20 +23,27 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable()
+       String[] SWAGGER_URL_PATHS = new String[] {
+               "/swagger-ui.html**",
+               "/swagger-resources/**",
+               "/v2/api-docs**",
+               "/webjars/**"};
+
+       http.cors().and().csrf().disable()
                // .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/api/libro/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(SWAGGER_URL_PATHS).permitAll()
+               .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
+        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**, ");
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

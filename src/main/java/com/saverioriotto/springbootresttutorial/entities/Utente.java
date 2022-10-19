@@ -39,6 +39,12 @@ public class Utente {
         this.email = email;
         this.password = password;
     }
+    public Utente(String username, String email, String password, Set<Ruolo> ruoli) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = ruoli;
+    }
     public Long getId() {
         return id;
     }

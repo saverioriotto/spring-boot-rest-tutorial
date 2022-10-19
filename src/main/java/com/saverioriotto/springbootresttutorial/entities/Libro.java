@@ -13,6 +13,14 @@ public class Libro {
     private String nome;
     private String autore;
 
+    public Libro() {
+    }
+
+    public Libro(String nome, String autore) {
+        this.nome = nome;
+        this.autore = autore;
+    }
+
     public long getId() {
         return id;
     }

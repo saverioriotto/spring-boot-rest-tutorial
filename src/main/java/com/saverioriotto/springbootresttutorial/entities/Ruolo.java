@@ -15,6 +15,12 @@ public class Ruolo {
     private RuoloEnum name;
     public Ruolo() {
     }
+
+    public Ruolo(Integer id, RuoloEnum name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Ruolo(RuoloEnum name) {
         this.name = name;
     }
